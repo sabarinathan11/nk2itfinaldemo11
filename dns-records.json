@@ -3,7 +3,7 @@
     {
       "type": "A",
       "name": "nk2telco.com.au",
-      "content": "YOUR_FRONTEND_IP",
+      "content": "YOUR_FRONTEND_IP_OR_PAGES_HOST",
       "proxied": true,
       "ttl": 1
     },
@@ -17,7 +17,7 @@
     {
       "type": "CNAME",
       "name": "api",
-      "content": "YOUR_BACKEND_HOST", 
+      "content": "YOUR_BACKEND_HOSTNAME",
       "proxied": false,
       "ttl": 1
     }

@@ -1,14 +1,17 @@
-name = "nk2telco-domains"
+name = "securecart"
 compatibility_date = "2025-08-28"
 
-# Note: This file is used only for wrangler commands that need a project manifest.
-# Cloudflare DNS bulk operations rely on the Cloudflare account associated with your login.
+[pages]
+pages_build_output_dir = "./dist"
 
+[build]
+command = "npm run build"
+directory = "dist"
+
+# Optional account/zone information for production environment
 [env.production]
-# zone_id = "YOUR_ZONE_ID"
 # account_id = "YOUR_ACCOUNT_ID"
+# zone_id = "YOUR_ZONE_ID"
 
-# Optional: define a worker route if you want to attach a worker to api.nk2telco.com.au
-# [[routes]]
-# pattern = "api.nk2telco.com.au/*"
-# script = "your-worker-name"
+# Note: Cloudflare Pages Functions live in the `functions/` directory in your project root.
+# Do NOT add runtime JS to this TOML file; keep only configuration here.
