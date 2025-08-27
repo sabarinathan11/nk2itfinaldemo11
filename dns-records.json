@@ -1,0 +1,25 @@
+{
+  "recs": [
+    {
+      "type": "A",
+      "name": "nk2telco.com.au",
+      "content": "YOUR_FRONTEND_IP",
+      "proxied": true,
+      "ttl": 1
+    },
+    {
+      "type": "CNAME",
+      "name": "www",
+      "content": "nk2telco.com.au",
+      "proxied": true,
+      "ttl": 1
+    },
+    {
+      "type": "CNAME",
+      "name": "api",
+      "content": "YOUR_BACKEND_HOST", 
+      "proxied": false,
+      "ttl": 1
+    }
+  ]
+}
