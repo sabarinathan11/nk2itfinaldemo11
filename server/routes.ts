@@ -10,6 +10,15 @@ import { randomUUID } from "crypto";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health endpoint for readiness and liveness checks
+  app.get("/health", async (_req, res) => {
+    try {
+      return res.json({ status: "ok", uptime: process.uptime() });
+    } catch (err) {
+      return res.status(500).json({ status: "error" });
+    }
+  });
+
   // Get all products
   app.get("/api/products", async (req, res) => {
     try {

@@ -5,9 +5,11 @@ services:
     region: syd
     branch: main
     plan: starter
+    disk: 1024
     buildCommand: "npm install && npm run build"
     startCommand: "npm start"
-    disk: 1024
+    startTimeout: 300
+    healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
         sync: false
@@ -24,6 +26,7 @@ services:
       - key: NODE_ENV
         value: production
         sync: false
+
   - type: cron # optional: example for running seeds/migrations via a job
     name: securecart-migrate
     env: node
