@@ -120,7 +120,7 @@ export class MemStorage implements IStorage {
     const address: Address = {
       ...insertAddress,
       id,
-      customerId: insertAddress.customerId,
+      customerId: insertAddress.customerId ?? null,
       country: insertAddress.country || "Australia",
     };
     this.addresses.set(id, address);
@@ -130,7 +130,8 @@ export class MemStorage implements IStorage {
   async createOrder(insertOrder: InsertOrder): Promise<Order> {
     const order: Order = {
       ...insertOrder,
-      customerId: insertOrder.customerId || null,
+      // storage expects a non-null customerId (orders.customerId is NOT NULL in schema)
+      customerId: insertOrder.customerId as string,
       paymentMethod: insertOrder.paymentMethod || null,
       paymentStatus: insertOrder.paymentStatus || null,
       paymentReference: insertOrder.paymentReference || null,

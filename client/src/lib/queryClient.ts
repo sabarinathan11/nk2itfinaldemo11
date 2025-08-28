@@ -1,5 +1,17 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+function buildUrl(url: string) {
+  // Use Vite env variable VITE_PUBLIC_API_URL when set (fallback to relative paths)
+  const env = (typeof import.meta !== 'undefined' ? (import.meta as any).env : undefined) as any;
+  const base = env?.VITE_PUBLIC_API_URL || env?.PUBLIC_API_URL || "";
+  if (!base) return url;
+  // if url already absolute, return as-is
+  if (/^https?:\/\//i.test(url)) return url;
+  const trimmedBase = base.replace(/\/+$/, "");
+  return trimmedBase + (url.startsWith("/") ? url : `/${url}`);
+}
+
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
@@ -12,7 +24,7 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  const res = await fetch(buildUrl(url), {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
@@ -29,7 +41,8 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
+    const url = queryKey.join("/") as string;
+    const res = await fetch(buildUrl(url), {
       credentials: "include",
     });
 

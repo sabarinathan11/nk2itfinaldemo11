@@ -1,10 +1,35 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Setup CORS
+const allowedOrigins = [] as string[];
+const envPublic = (process.env.PUBLIC_API_URL || process.env.VITE_PUBLIC_API_URL || "").toString();
+if (envPublic) {
+  allowedOrigins.push(envPublic.replace(/\/+$/, ""));
+}
+// Common frontend origins
+allowedOrigins.push("https://nk2telco.com.au");
+allowedOrigins.push("https://www.nk2telco.com.au");
+allowedOrigins.push("https://securecart.pages.dev");
+
+app.use(cors({
+  origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+    // allow requests with no origin like curl or server-to-server
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy: Origin not allowed'));
+    }
+  },
+  credentials: true,
+}));
 
 app.use((req, res, next) => {
   const start = Date.now();
